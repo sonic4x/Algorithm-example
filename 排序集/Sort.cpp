@@ -835,6 +835,10 @@ void RandomElement(node *head)
 
 
 /////////////////find k max num///////////////////
+/*
+下面算法的时间复杂度为O(n)
+n + n/2 + n/4 + ... + 1 = 2n - 1, so O(n)
+*/
 int k = 3;  //第k大
 int ans;
 
