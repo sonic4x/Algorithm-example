@@ -853,7 +853,7 @@ int   partition( int a[], int low, int high )
 		swap( a[rand()%(high-low+1)+low],  a[low] ); //从[low-high]间取一个数作为pivot，也可以直接取a[low]
 	
 	//下面的循环以及循环后的swap，旨在把大于pivot的数都移到pivot索引前，这样移动后，可知pivot按降序排第几
-	//(下标索引是)
+	//last表明在已经大于pivot的元素中的最后一个下标索引
 	for( i = low+1, last = low; i <= high;  i++ )
 	{
 		if( a[i] >= a[low] )
