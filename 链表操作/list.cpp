@@ -72,19 +72,7 @@ struct stu* deletelistInfo(struct stu *head,int a)
 	}
 	
 	return head;
-/*	while(s->age!=a)   //进入死循环
-	{
-		p = s;
-		s = s->next;
-	}
-	if(s==NULL)
-		printf("The record is not exist.");
-	else
-	{
-		p->next = s->next;
-		printf("Delete successful!");
-	}
-*/
+
 }
 
 //-----------链表中删除学生年龄等于age的学生信息(删除所有符合条件的)
@@ -224,6 +212,25 @@ struct stu* Invert_list(struct stu *head)
 	head=p1;
 	return head;
 }
+struct stu* InvertList(stu *head)
+{
+	if (head == NULL)
+	{
+		return NULL;
+	}
+
+	stu *pre = NULL;
+	stu *cur = head;
+	stu *next;
+	while (cur != NULL)
+	{
+		next = cur->next;
+		cur->next = pre;
+		pre = cur;
+		cur = next;
+	}
+	return pre;
+}
 
 /*---------------------------
 单链表连接
@@ -242,7 +249,69 @@ struct stu *Concatenate_list(struct stu *head1,struct stu *head2)
 	return head1;
 }
 
+/*
+删除链表中倒数第K个元素 （K从1开始）
+*/
+struct stu *DeleteKth2Tail(struct stu *head, int k)
+{
+	if (head == NULL || k <= 0)
+		return NULL;
 
+	stu *pBefore = head;
+	int idx = 0;
+	for (; idx < k - 1; idx++)
+	{
+		if (pBefore->next == NULL)
+			return NULL;
+
+		pBefore = pBefore->next;
+	}
+
+	if (pBefore->next == NULL)
+	{
+		//head need to be deleted
+		stu *newHead = head->next;
+		free(head);
+		//head = NULL; //useless
+		return newHead;
+	}
+
+	stu *pBehind = head;
+	while (pBefore->next->next != NULL)
+	{
+		pBefore = pBefore->next;
+		pBehind = pBehind->next;
+	}
+
+	//now pBehind is the node before Kth to tail.
+	stu * tobeDel = pBehind->next;
+	pBehind->next = pBehind->next->next;
+	free(tobeDel);
+	tobeDel = NULL;  //important!!
+	return head;
+}
+
+
+/*有序链表连接*/
+struct stu *MergeNode(stu *head1, stu *head2)
+{
+	if (head1 == NULL)
+		return head2;
+	if (head2 == NULL)
+		return head1;
+	stu *pMergedHead;
+	if (head1->age < head2->age)
+	{
+		pMergedHead = head1;
+		pMergedHead->next = MergeNode(head1->next, head2);
+	}
+	else
+	{
+		pMergedHead = head2;
+		pMergedHead->next = MergeNode(head1, head2->next);
+	}
+	return pMergedHead;
+}
 void display(struct stu *head)
 {
 	struct stu* p;
@@ -256,6 +325,7 @@ void display(struct stu *head)
 
 int main()
 {
+
     struct stu *s,*Ins;
 	int n,age;
 	printf("Please input the length of seqlist:\n");
@@ -263,9 +333,23 @@ int main()
     s = creatlist(n);
     display(s);
 
-	//反转
-	s=Invert_list(s);
+	//增加
+	printf("Please input the insert info:\n");
+	Ins = (struct stu *)malloc(sizeof(stu));            //don't forget allocate memory
+	scanf("%s %c %d %d", Ins->name, &Ins->sex, &Ins->no, &Ins->age);
+	Ins->next = NULL;
+	s = InsertListInfo(s, Ins);
 	display(s);
+
+	printf("kth to tail to be deleted\n");
+	stu * newHead = DeleteKth2Tail(s, 4);
+	display(newHead);
+	display(s);
+	//反转
+	newHead = InvertList(newHead);
+	display(newHead);
+	newHead = InvertList(newHead);
+	display(newHead);
 
 	//链表比较
 	struct stu *s1;
@@ -284,13 +368,7 @@ int main()
 	s=deletelistInfo_all(s,age);
 	display(s);
 
-	//增加
-	printf("Please input the insert info:\n");
-	Ins=(struct stu *)malloc(sizeof(stu));            //don't forget allocate memory
-	scanf("%s %c %d %d",Ins->name,&Ins->sex,&Ins->no,&Ins->age);
-	Ins->next=NULL;
-	s=InsertListInfo(s,Ins);
-	display(s);
+
 
 
 
