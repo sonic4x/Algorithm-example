@@ -13,8 +13,10 @@ struct TreeNode
 #pragma region 判断tree2是不是tree1的子节点
 bool HasSubTree(TreeNode *root1, TreeNode *root2)
 {
-	bool bRet = false;
+	if (root1 == NULL || root2 == NULL)
+		return false;
 
+	bool bRet = false;
 	bRet = DoesTree1HasTree2(root1, root2);
 	if (!bRet)
 		bRet = HasSubTree(root1->left, root2);
@@ -26,6 +28,7 @@ bool HasSubTree(TreeNode *root1, TreeNode *root2)
 
 bool DoesTree1HasTree2(TreeNode *root1, TreeNode *root2)
 {
+	// Note: we check root2 first.
 	if (root2 == NULL)
 		return true;
 	if (root1 == NULL)
