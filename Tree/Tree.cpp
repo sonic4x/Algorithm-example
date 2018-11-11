@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-
+#include <vector>
 struct TreeNode
 {
 	int value;
@@ -41,7 +41,61 @@ bool DoesTree1HasTree2(TreeNode *root1, TreeNode *root2)
 }
 #pragma endregion
 
+#pragma region Mirror of the tree
+void MirrorRecursively(TreeNode *root)
+{
+	if (root == NULL || (root->left == NULL && root->right == NULL))
+		return;
+	
+	TreeNode *temp = root->left;
+	root->left = root->right;
+	root->right = temp;
 
+	MirrorRecursively(root->left);
+	MirrorRecursively(root->right);
+
+}
+#pragma endregion
+
+#pragma region 打印二叉树中结点值的和为输入值的所有路径
+void FindPath(TreeNode *root, int expectedSum)
+{
+	if (root == NULL) return;
+
+	int sum = 0;
+	std::vector<int> vecPath;
+	
+	FindPath(root, expectedSum, vecPath, sum);
+
+}
+
+void FindPath(TreeNode *root, int expectedSum, std::vector<int> & path, int &sum)
+{
+	sum += root->value;
+	path.push_back(root->value);
+
+	bool leaf = root->left == NULL && root->right == NULL;
+	if (leaf && sum == expectedSum) {
+		//print path
+		std::vector<int>::iterator iter = path.begin();
+		for (; iter != path.end(); ++iter) {
+			printf("%d\t", (*iter));
+		}
+		printf("\n");
+	}
+
+
+	if (root->left != NULL) {
+		FindPath(root->left, expectedSum, path, sum);
+	}
+	if (root->right != NULL) {
+		FindPath(root->right, expectedSum, path, sum);
+	}
+
+	sum -= root->value;
+	path.pop_back();
+}
+#pragma endregion
 int main()
 {
     return 0;
