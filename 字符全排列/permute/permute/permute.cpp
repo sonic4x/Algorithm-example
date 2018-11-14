@@ -1,9 +1,6 @@
 // permute.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
-
-
 #include <stdio.h>
 #include <iostream>
 using namespace std;
@@ -11,7 +8,7 @@ using namespace std;
 
 static int g_nTotalPermuteNum = 0;
 static int g_nTotalCombineNum = 0;
-
+#pragma region Permute
 void DoPermute (char in[], char out[], int used[], int length, int recursLvl, bool bRepeat)
 {
 	int i;
@@ -65,7 +62,9 @@ int Permute( char inString[], bool bRepeat)
 	free (used);
 	return 1;
 }
+#pragma endregion
 
+#pragma region combine
 // combine recursive algrithm
 /*
 start: 遍历起点字符索引
@@ -117,6 +116,9 @@ int Combine(char inString[])
 	free (out);
 	return 1;
 }
+
+#pragma endregion
+
 int main()
 {
 	////////////////permute//////////////////

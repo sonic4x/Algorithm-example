@@ -1,4 +1,4 @@
-// Tree.cpp : Defines the entry point for the console application.
+ï»¿// Tree.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
@@ -10,7 +10,7 @@ struct TreeNode
 	TreeNode *right;
 };
 
-#pragma region ÅĞ¶Ïtree2ÊÇ²»ÊÇtree1µÄ×Ó½Úµã
+#pragma region åˆ¤æ–­tree2æ˜¯ä¸æ˜¯tree1çš„å­èŠ‚ç‚¹
 bool HasSubTree(TreeNode *root1, TreeNode *root2)
 {
 	if (root1 == NULL || root2 == NULL)
@@ -57,7 +57,41 @@ void MirrorRecursively(TreeNode *root)
 }
 #pragma endregion
 
-#pragma region ´òÓ¡¶ş²æÊ÷ÖĞ½áµãÖµµÄºÍÎªÊäÈëÖµµÄËùÓĞÂ·¾¶
+#pragma region Check if the sequence is post-order of BST
+/*for example: 1,5,3,14,18,16,10 is true*/
+bool verifySequenceOfBST(int sequence[], int length) {
+	if (sequence == NULL || length == 0)
+		return false;
+
+	int rootValue = sequence[length - 1];
+	int idx = 0;
+	for (; idx < length - 1; idx++) {
+		if (sequence[idx] > rootValue) {
+			break;
+		}
+	}
+
+	//now idx is the start of the right sub tree
+	int rightStart = idx;
+	for (; idx < length - 1; idx++) {
+		if (sequence[idx] < rootValue)
+			return false;
+	}
+
+	bool leftMatched = true;
+	bool rightMatched = true;
+	if (idx > 0) // indicate we have left tree
+		leftMatched = verifySequenceOfBST(sequence, rightStart);
+
+	if (idx < length - 1) // indicate we have right tree
+		rightMatched = verifySequenceOfBST(sequence + rightStart, length - 1 - rightStart);
+
+
+	return (leftMatched && rightMatched);
+}
+#pragma endregion
+
+#pragma region æ‰“å°äºŒå‰æ ‘ä¸­ç»“ç‚¹å€¼çš„å’Œä¸ºè¾“å…¥å€¼çš„æ‰€æœ‰è·¯å¾„
 void FindPath(TreeNode *root, int expectedSum)
 {
 	if (root == NULL) return;
@@ -96,6 +130,99 @@ void FindPath(TreeNode *root, int expectedSum, std::vector<int> & path, int &sum
 	path.pop_back();
 }
 #pragma endregion
+
+#pragma region B-search tree -> sorted doubly linked List
+/*
+requirement: use no extra space.
+*/
+TreeNode *ConvertBTree2SortedDoublyList(TreeNode *root) {
+	if (root == NULL)
+		return NULL;
+
+	TreeNode *lastNode = NULL;
+	ConvertBTree(root, &lastNode);
+
+	//find head
+	while (lastNode !=NULL && lastNode->left != NULL)
+	{
+		lastNode = lastNode->left;
+	}
+	return lastNode; //new head
+
+}
+void ConvertBTree(TreeNode *root, TreeNode **lastNode)
+{
+	if (root == NULL)
+		return;
+
+	TreeNode *curNode = root;
+
+	if (root->left != NULL) {
+		ConvertBTree(root->left, lastNode);
+	}
+
+	if(*lastNode != NULL)
+		(*lastNode)->right = curNode;
+	curNode->left = *lastNode;
+
+	*lastNode = root;
+	if (root->right != NULL) {
+		ConvertBTree(root->right, lastNode);
+	}
+}
+#pragma endregion
+
+#pragma region Tree depth related
+int TreeDepth(TreeNode *root)
+{
+	if (root == NULL)
+	{
+		return 0;
+	}
+
+	int leftLeafDepth = TreeDepth(root->left);
+	int rightLeafDepth = TreeDepth(root->right);
+
+	return (leftLeafDepth > rightLeafDepth ? leftLeafDepth + 1 : rightLeafDepth + 1);
+}
+/*depth between left and right on each node is no more than 1, then we call it balanced*/
+bool IsBalancedTree_v1(TreeNode *root) {
+	if (root == NULL)
+		return true;
+	int leftLeafDepth = TreeDepth(root->left);
+	int rightLeafDepth = TreeDepth(root->right);
+	int diff = leftLeafDepth - rightLeafDepth;
+	if (diff > 1 || diff < -1)
+		return false;
+
+	return IsBalancedTree_v1(root->left) && IsBalancedTree_v1(root->right);
+}
+
+bool IsBalanceTree_v2(TreeNode *root) {
+	int depth = 0;
+	return IsBalanced(root, depth);
+}
+
+bool IsBalanced(TreeNode *root, int& depth) {
+
+	if (root == NULL) {
+		depth = 0;
+		return true;
+	}
+	int depthLeft, depthRight;
+	if (IsBalanced(root->left, depthLeft) && IsBalanced(root->right, depthLeft))
+	{
+		int diff = depthLeft - depthRight;
+		if (diff < 1 && diff > -1) {
+			depth = depthLeft > depthRight ? depthLeft + 1 : depthRight + 1;
+			return true;
+		}
+	}
+	return false;
+}
+#pragma endregion
+
+
 int main()
 {
     return 0;

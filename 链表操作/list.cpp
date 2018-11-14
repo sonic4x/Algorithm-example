@@ -1,7 +1,7 @@
-#include "stdio.h"
-#include "conio.h"
-#include <assert.h>     //assert ËùĞè
+ï»¿#include "stdio.h"
+#include <assert.h>     
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -17,8 +17,8 @@ struct stu *creatlist(int n)
 {
     int i;
     
-    struct stu *head,*p1,*p2;//hÎªÍ·½áµã£¬pÎªÇ°Ò»½áµã£¬sÎªµ±Ç°½áµã
-//  p1 = (struct stu *)malloc(sizeof(struct stu));   //ÒªĞ´ÔÚforÑ­»·ÌåÀïÃæ
+    struct stu *head,*p1,*p2;//hä¸ºå¤´ç»“ç‚¹ï¼Œpä¸ºå‰ä¸€ç»“ç‚¹ï¼Œsä¸ºå½“å‰ç»“ç‚¹
+//  p1 = (struct stu *)malloc(sizeof(struct stu));   //è¦å†™åœ¨forå¾ªç¯ä½“é‡Œé¢
     head=NULL;
     
     for(i=0;i<n;i++)
@@ -38,10 +38,10 @@ struct stu *creatlist(int n)
 		p2=p1;
     }
     printf("Create successful!\n");
-	getch();
+		getchar();
     return head;
 }
-//-----------Á´±íÖĞÉ¾³ıÑ§ÉúÄêÁäµÈÓÚageµÄÑ§ÉúĞÅÏ¢(Ö»É¾³ıµÚÒ»¸öÕÒµ½µÄ)
+//-----------é“¾è¡¨ä¸­åˆ é™¤å­¦ç”Ÿå¹´é¾„ç­‰äºageçš„å­¦ç”Ÿä¿¡æ¯(åªåˆ é™¤ç¬¬ä¸€ä¸ªæ‰¾åˆ°çš„)
 struct stu* deletelistInfo(struct stu *head,int a)  
 {
 	if(head==NULL)
@@ -51,9 +51,9 @@ struct stu* deletelistInfo(struct stu *head,int a)
 	}
 	
 	struct stu	*p1, 
-				*p2;    //Ç°Ò»½Úµã
+				*p2;    //å‰ä¸€èŠ‚ç‚¹
 	p1=head;
-	while(p1->next!=NULL && p1->age!=a)  //×¢Òâ²»Òª°Ñp1->next!=NULLĞ´³Ép1!=NULL
+	while(p1->next!=NULL && p1->age!=a)  //æ³¨æ„ä¸è¦æŠŠp1->next!=NULLå†™æˆp1!=NULL
 	{
 		p2=p1;
 		p1=p1->next;
@@ -75,7 +75,7 @@ struct stu* deletelistInfo(struct stu *head,int a)
 
 }
 
-//-----------Á´±íÖĞÉ¾³ıÑ§ÉúÄêÁäµÈÓÚageµÄÑ§ÉúĞÅÏ¢(É¾³ıËùÓĞ·ûºÏÌõ¼şµÄ)
+//-----------é“¾è¡¨ä¸­åˆ é™¤å­¦ç”Ÿå¹´é¾„ç­‰äºageçš„å­¦ç”Ÿä¿¡æ¯(åˆ é™¤æ‰€æœ‰ç¬¦åˆæ¡ä»¶çš„)
 struct stu* deletelistInfo_all(struct stu *head,int a) 
 {
 	if(head==NULL)
@@ -108,7 +108,7 @@ struct stu* deletelistInfo_all(struct stu *head,int a)
 }
 
 /*---------------------------------------
-½«ÄêÁä°´ÉıĞò²åµ½Ô­Á´±íÖĞ
+å°†å¹´é¾„æŒ‰å‡åºæ’åˆ°åŸé“¾è¡¨ä¸­
 ------------------------------------------*/
 struct stu* InsertListInfo(struct stu *head, struct stu *stud)
 {
@@ -118,7 +118,7 @@ struct stu* InsertListInfo(struct stu *head, struct stu *stud)
 	if(head==NULL)
 	{
 		head=stud;
-//		stud->next=NULL;     //ÓÉÓÚstud->nextÔÚmainÖĞÒÑ¾­=NULL£¬´Ë´¦¿ÉÊ¡
+//		stud->next=NULL;     //ç”±äºstud->nextåœ¨mainä¸­å·²ç»=NULLï¼Œæ­¤å¤„å¯çœ
 	}
 	else
 	{
@@ -144,8 +144,8 @@ struct stu* InsertListInfo(struct stu *head, struct stu *stud)
 	}
 	return head;
 }
-/*--------------µ¥Á´±í±È½Ï
-ÏàÍ¬·µ»Ø1£¬·ñÔò·µ»Ø0
+/*--------------å•é“¾è¡¨æ¯”è¾ƒ
+ç›¸åŒè¿”å›1ï¼Œå¦åˆ™è¿”å›0
 */
 int Compare_list(struct stu *head1,struct stu *head2)
 {
@@ -166,7 +166,7 @@ int Compare_list(struct stu *head1,struct stu *head2)
 		{
 			if( p1->age!=p2->age   ||
 				strcmp(p1->name,p2->name) ||
-			//	p1->name!=p2->name ||		//¸Ã×Ö¶ÎÊÇchar[],ËùÒÔÒªÓÃstrcmp
+			//	p1->name!=p2->name ||		//è¯¥å­—æ®µæ˜¯char[],æ‰€ä»¥è¦ç”¨strcmp
 				p1->no!=p2->no     ||
 				p1->sex!=p2->sex )
 			{
@@ -181,7 +181,7 @@ int Compare_list(struct stu *head1,struct stu *head2)
 	}
 }
 /*------------------------------------------
-µ¥Á´±íµÄ·´×ª
+å•é“¾è¡¨çš„åè½¬
 ------------------------------------------*/
 struct stu* Invert_list(struct stu *head)
 {
@@ -189,9 +189,9 @@ struct stu* Invert_list(struct stu *head)
 	struct stu *p1;
 	struct stu *p2;
 
-	assert(head!=NULL);      // ¶ÏÑÔÁ´±í²»Îª¿Õ
+	assert(head!=NULL);      // æ–­è¨€é“¾è¡¨ä¸ä¸ºç©º
 
-	//Ö»ÓĞÒ»¸öÔªËØ£¬¼´·µ»Ø¸ÃÔªËØ
+	//åªæœ‰ä¸€ä¸ªå…ƒç´ ï¼Œå³è¿”å›è¯¥å…ƒç´ 
 	if(head->next==NULL)
 	{
 		return head;
@@ -233,7 +233,7 @@ struct stu* InvertList(stu *head)
 }
 
 /*---------------------------
-µ¥Á´±íÁ¬½Ó
+å•é“¾è¡¨è¿æ¥
 ----------------------------*/
 struct stu *Concatenate_list(struct stu *head1,struct stu *head2)
 {
@@ -250,7 +250,7 @@ struct stu *Concatenate_list(struct stu *head1,struct stu *head2)
 }
 
 /*
-É¾³ıÁ´±íÖĞµ¹ÊıµÚK¸öÔªËØ £¨K´Ó1¿ªÊ¼£©
+åˆ é™¤é“¾è¡¨ä¸­å€’æ•°ç¬¬Kä¸ªå…ƒç´  ï¼ˆKä»1å¼€å§‹ï¼‰
 */
 struct stu *DeleteKth2Tail(struct stu *head, int k)
 {
@@ -292,7 +292,7 @@ struct stu *DeleteKth2Tail(struct stu *head, int k)
 }
 
 
-/*ÓĞĞòÁ´±íÁ¬½Ó*/
+/*æœ‰åºé“¾è¡¨è¿æ¥*/
 struct stu *MergeNode(stu *head1, stu *head2)
 {
 	if (head1 == NULL)
@@ -312,6 +312,42 @@ struct stu *MergeNode(stu *head1, stu *head2)
 	}
 	return pMergedHead;
 }
+
+/*
+åˆ é™¤å€’æ•°ç¬¬Mä¸ªå…ƒç´ 
+*/
+bool DeleteReverseMElem(struct stu **head, int m)
+{
+	if (*head == NULL)
+		return false;
+
+	stu *fast = *head;
+
+	for (int i = 0; i < m; ++i)
+	{
+		if (fast->next == NULL) {
+			return false;
+		}
+		fast = fast->next;
+	}
+
+	if (fast->next == NULL) {
+		//it means the reverse M elem is the head
+		*head = (*head)->next;
+		return true;
+	}
+
+	stu *behind = *head;
+	while (fast->next->next != NULL) {
+		fast = fast->next;
+		behind = behind->next;
+	}
+
+	// Now, the behind is the element before the reversed M elem
+	behind->next = behind->next->next;
+	return true;
+}
+
 void display(struct stu *head)
 {
 	struct stu* p;
@@ -333,7 +369,7 @@ int main()
     s = creatlist(n);
     display(s);
 
-	//Ôö¼Ó
+	//å¢åŠ 
 	printf("Please input the insert info:\n");
 	Ins = (struct stu *)malloc(sizeof(stu));            //don't forget allocate memory
 	scanf("%s %c %d %d", Ins->name, &Ins->sex, &Ins->no, &Ins->age);
@@ -345,13 +381,13 @@ int main()
 	stu * newHead = DeleteKth2Tail(s, 4);
 	display(newHead);
 	display(s);
-	//·´×ª
+	//åè½¬
 	newHead = InvertList(newHead);
 	display(newHead);
 	newHead = InvertList(newHead);
 	display(newHead);
 
-	//Á´±í±È½Ï
+	//é“¾è¡¨æ¯”è¾ƒ
 	struct stu *s1;
 	int n1;
 	printf("Please input the length of seqlist:\n");
