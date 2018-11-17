@@ -223,6 +223,60 @@ bool IsBalanced(TreeNode *root, int& depth) {
 #pragma endregion
 
 
+#pragma region Find lowest common ancestor in BST
+int FindLowestCommonAncestor(TreeNode *root, int value1, int value2) {
+	if (root == NULL)
+		return 0;
+	TreeNode *curNode = root;
+	while (true) {
+		if (value1 < curNode->value && value2 < curNode->value) {
+			curNode = curNode->left;
+		}
+		else if (value1 > curNode->value && value2 > curNode->value) {
+			curNode = curNode->right;
+		}
+		else {
+			return curNode->value;
+		}
+	}
+
+}
+#pragma endregion
+
+#pragma region rebuild tree based on preOrder array and inOrder array
+TreeNode * BuildTree(int preOrderArr[], int inOrderArr[], int length)
+{
+	if (preOrderArr == NULL || inOrderArr == NULL || length <= 0)
+		return NULL;
+
+	int rootValue = preOrderArr[0];
+
+	TreeNode *root = new TreeNode();
+	root->left = root->right = NULL;
+	root->value = rootValue;
+	int i = 0;
+	for (; i < length; i++)
+	{
+		if (inOrderArr[i] = rootValue)
+		{
+			break;
+		}
+	}
+
+	//check if valid 
+	if (i == length)
+		throw std::exception("invalid arr");
+
+	//now for inOrder arry, the [0,i-1] is the left tree
+	//[i+1, length-1] is the right tree
+	if(i>0)
+		root->left = BuildTree(preOrderArr + 1, inOrderArr, i);
+	if(length-i-1 > 0)
+		root->right = BuildTree(preOrderArr + i, inOrderArr + i +1, length - i - 1);
+
+	return root;
+}
+#pragma endregion
 int main()
 {
     return 0;
