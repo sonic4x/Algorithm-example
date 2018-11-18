@@ -280,9 +280,9 @@ Node *Insert_Sort_LinkTable2(Node *head,int increase)	//for清晰版
 	{
 		if (increase)
 		{
-			for(pM = pUnsorted, pTrvrs= head; pTrvrs != NULL; pPre = pTrvrs,pTrvrs = pTrvrs->next)
+			for( pTrvrs= head; pTrvrs != NULL; pPre = pTrvrs,pTrvrs = pTrvrs->next)
 			{
-				if( pTrvrs->data > pM->data )
+				if( pTrvrs->data > pUnsorted->data )
 				{
 					break;
 				}
@@ -290,15 +290,15 @@ Node *Insert_Sort_LinkTable2(Node *head,int increase)	//for清晰版
 		}
 		else
 		{
-			for(pM = pUnsorted, pTrvrs = head; pTrvrs != NULL; pPre = pTrvrs,pTrvrs = pTrvrs->next)
+			for( pTrvrs = head; pTrvrs != NULL; pPre = pTrvrs,pTrvrs = pTrvrs->next)
 			{
-				if( pTrvrs->data < pM->data )
+				if( pTrvrs->data < pUnsorted->data )
 				{
 					break;
 				}
 			}
 		}
-
+		pM = pUnsorted;
 		pUnsorted = pUnsorted->next;
 		
 		if(pTrvrs == head)
@@ -1055,10 +1055,10 @@ int main()
 	node *head,*s_head;
 	head = CreateSortNode(SIZE,TestArray0);
 
-	findMaxK(head);
-	printf("find k max num: %d\n", ans);
-
-
+	//findMaxK(head);
+	//printf("find k max num: %d\n", ans);
+	printf("[排序]前链表元素.........\n");
+	List_output(head);
 	printf("[排序]后链表元素.........\n");
 //	s_head = Select_Sort_LinkTable(head,1);
 	s_head = Insert_Sort_LinkTable(head,0);
