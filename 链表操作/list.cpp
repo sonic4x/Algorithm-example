@@ -348,6 +348,69 @@ bool DeleteReverseMElem(struct stu **head, int m)
 	return true;
 }
 
+#pragma region find first common node
+/*
+a->b->c
+	   ->f->g
+   d->e
+the first common node is f
+*/
+int getLengthofNode(stu* head)
+{
+	int len = 0;
+	stu *curNode = head;
+	while (curNode != NULL)
+	{
+		len++;
+		curNode = curNode->next;
+	}
+	return len;
+}
+stu* FindFirstCommonNode(stu* head1, stu *head2)
+{
+	if (head1 == NULL || head2 == NULL)
+	{
+		return NULL;
+	}
+
+	//get length of each node
+	int len1 = getLengthofNode(head1);
+	int len2 = getLengthofNode(head2);
+	int diff;
+
+	stu *fast = NULL;
+	stu *slow = NULL;
+	if (len1 > len2)
+	{
+		fast = head1;
+		slow = head2;
+		diff = len1 - len2;
+	}
+	else
+	{
+		fast = head2;
+		slow = head1;
+		diff = len2 - len1;
+	}
+
+	for (int i = 0; i < diff; i++)
+	{
+		fast = fast->next;
+	}
+
+	//now 2 list are same length
+	while (fast != NULL)
+	{
+		if (fast == slow)
+		{
+			return fast;
+		}
+		fast = fast->next;
+		slow = slow->next;
+	}
+	return NULL;
+}
+#pragma endregion
 void display(struct stu *head)
 {
 	struct stu* p;

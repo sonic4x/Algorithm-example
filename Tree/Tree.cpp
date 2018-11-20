@@ -3,6 +3,8 @@
 
 #include "stdafx.h"
 #include <vector>
+#include <iostream>
+using namespace std;
 struct TreeNode
 {
 	int value;
@@ -11,6 +13,19 @@ struct TreeNode
 };
 
 #pragma region 判断tree2是不是tree1的子节点
+bool DoesTree1HasTree2(TreeNode *root1, TreeNode *root2)
+{
+	// Note: we check root2 first.
+	if (root2 == NULL)
+		return true;
+	if (root1 == NULL)
+		return false;
+
+	if (root1->value != root2->value)
+		return false;
+
+	return DoesTree1HasTree2(root1->left, root2->left) && DoesTree1HasTree2(root1->right, root2->right);
+}
 bool HasSubTree(TreeNode *root1, TreeNode *root2)
 {
 	if (root1 == NULL || root2 == NULL)
@@ -26,19 +41,6 @@ bool HasSubTree(TreeNode *root1, TreeNode *root2)
 	return bRet;
 }
 
-bool DoesTree1HasTree2(TreeNode *root1, TreeNode *root2)
-{
-	// Note: we check root2 first.
-	if (root2 == NULL)
-		return true;
-	if (root1 == NULL)
-		return false;
-
-	if (root1->value != root2->value)
-		return false;
-
-	return DoesTree1HasTree2(root1->left, root2->left) && DoesTree1HasTree2(root1->right, root2->right);
-}
 #pragma endregion
 
 #pragma region Mirror of the tree
@@ -92,17 +94,6 @@ bool verifySequenceOfBST(int sequence[], int length) {
 #pragma endregion
 
 #pragma region 打印二叉树中结点值的和为输入值的所有路径
-void FindPath(TreeNode *root, int expectedSum)
-{
-	if (root == NULL) return;
-
-	int sum = 0;
-	std::vector<int> vecPath;
-	
-	FindPath(root, expectedSum, vecPath, sum);
-
-}
-
 void FindPath(TreeNode *root, int expectedSum, std::vector<int> & path, int &sum)
 {
 	sum += root->value;
@@ -129,12 +120,25 @@ void FindPath(TreeNode *root, int expectedSum, std::vector<int> & path, int &sum
 	sum -= root->value;
 	path.pop_back();
 }
+void FindPath(TreeNode *root, int expectedSum)
+{
+	if (root == NULL) return;
+
+	int sum = 0;
+	std::vector<int> vecPath;
+	
+	FindPath(root, expectedSum, vecPath, sum);
+
+}
+
+
 #pragma endregion
 
 #pragma region B-search tree -> sorted doubly linked List
 /*
 requirement: use no extra space.
 */
+void ConvertBTree(TreeNode *root, TreeNode **lastNode);
 TreeNode *ConvertBTree2SortedDoublyList(TreeNode *root) {
 	if (root == NULL)
 		return NULL;
@@ -173,6 +177,7 @@ void ConvertBTree(TreeNode *root, TreeNode **lastNode)
 #pragma endregion
 
 #pragma region Tree depth related
+bool IsBalanced(TreeNode *root, int& depth);
 int TreeDepth(TreeNode *root)
 {
 	if (root == NULL)
@@ -209,7 +214,8 @@ bool IsBalanced(TreeNode *root, int& depth) {
 		depth = 0;
 		return true;
 	}
-	int depthLeft, depthRight;
+	int depthLeft;
+	int depthRight = 0;
 	if (IsBalanced(root->left, depthLeft) && IsBalanced(root->right, depthLeft))
 	{
 		int diff = depthLeft - depthRight;
@@ -223,8 +229,79 @@ bool IsBalanced(TreeNode *root, int& depth) {
 #pragma endregion
 
 
+#pragma region Find lowest common ancestor in BST
+int FindLowestCommonAncestor(TreeNode *root, int value1, int value2) {
+	if (root == NULL)
+		return 0;
+	TreeNode *curNode = root;
+	while (true) {
+		if (value1 < curNode->value && value2 < curNode->value) {
+			curNode = curNode->left;
+		}
+		else if (value1 > curNode->value && value2 > curNode->value) {
+			curNode = curNode->right;
+		}
+		else {
+			return curNode->value;
+		}
+	}
+
+}
+#pragma endregion
+
+#pragma region rebuild tree based on preOrder array and inOrder array
+TreeNode * BuildTree(int preOrderArr[], int inOrderArr[], int length)
+{
+	if (preOrderArr == NULL || inOrderArr == NULL || length <= 0)
+		return NULL;
+
+	int rootValue = preOrderArr[0];
+
+	TreeNode *root = new TreeNode();
+	root->left = root->right = NULL;
+	root->value = rootValue;
+	int i = 0;
+	for (; i < length; i++)
+	{
+		if (inOrderArr[i] == rootValue)
+		{
+			break;
+		}
+	}
+
+	//check if valid 
+	if (i == length)
+		throw std::exception("invalid arr");
+
+	//now for inOrder arry, the [0,i-1] is the left tree
+	//[i+1, length-1] is the right tree
+	if(i>0)
+		root->left = BuildTree(preOrderArr + 1, inOrderArr, i);
+	if(length-i-1 > 0)
+		root->right = BuildTree(preOrderArr + i + 1, inOrderArr + i +1, length - i - 1);
+
+	return root;
+}
+#pragma endregion
+
+void display(TreeNode *root)
+{
+	if (root == NULL)
+		return;
+
+	cout << (root->value) << endl;
+	display(root->left);
+	display(root->right);
+}
+
 int main()
 {
+	int pre[] = {1, 2, 4, 7, 3, 5, 6, 8};
+	int in[] = {4,7,2,1,5, 3, 8, 6};
+	TreeNode * root = BuildTree(pre, in, 8);
+	display(root);
+
+	getchar();
     return 0;
 }
 
