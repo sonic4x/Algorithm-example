@@ -1000,6 +1000,35 @@ void GetLeastNumbers(vector<int> &numbers, intSet& leastNumbers, int k) {
 	}
 }
 
+void GetLeastNumbers(int numbers[], int len, intSet& leastNumbers, int k) {
+	if (numbers == NULL || k < 1 || len < k)
+		return;
+
+	leastNumbers.clear();
+
+	for (int i = 0; i < len; i++) {
+		if (leastNumbers.size() < k) {
+			leastNumbers.insert(numbers[i]);
+		}
+		else {
+			intSetIter maxNumberInLeastNumbersIt = leastNumbers.begin();
+			if (numbers[i] < *maxNumberInLeastNumbersIt) {
+				leastNumbers.erase(maxNumberInLeastNumbersIt);
+				leastNumbers.insert(numbers[i]);
+			}
+		}
+	}
+}
+
+void set_output(intSet& numbers)
+{
+	intSetIter it = numbers.begin();
+	for (; it != numbers.end(); it++)
+	{
+		printf("%d\t", *it);
+	}
+}
+
 #pragma endregion
 void List_output(node *head)
 {
@@ -1021,6 +1050,9 @@ int main()
 	}
 	printf("\n");
 
+	intSet leastNumbers;
+	GetLeastNumbers(TestArray0, SIZE, leastNumbers, 3);
+	set_output(leastNumbers);
 //	{
 //
 //		Rand_select(  TestArray0,   0,   SIZE-1   );
