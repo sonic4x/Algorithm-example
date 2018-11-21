@@ -183,35 +183,6 @@ int Compare_list(struct stu *head1,struct stu *head2)
 /*------------------------------------------
 单链表的反转
 ------------------------------------------*/
-struct stu* Invert_list(struct stu *head)
-{
-	struct stu *back;   
-	struct stu *p1;
-	struct stu *p2;
-
-	assert(head!=NULL);      // 断言链表不为空
-
-	//只有一个元素，即返回该元素
-	if(head->next==NULL)
-	{
-		return head;
-	}
-
-	back=head;
-	p1=back->next;
-	back->next=NULL;
-
-	while( p1->next !=NULL)
-	{
-		p2=p1;
-		p1=p1->next;
-		p2->next=back;
-		back=back->next;
-	}
-	p1->next=back;
-	head=p1;
-	return head;
-}
 struct stu* InvertList(stu *head)
 {
 	if (head == NULL)
@@ -252,6 +223,67 @@ struct stu *Concatenate_list(struct stu *head1,struct stu *head2)
 /*
 删除链表中倒数第K个元素 （K从1开始）
 */
+stu *RmKth2Tail(stu *head, int k)
+{
+	if (head == NULL || k <= 0)
+	{
+		return NULL;
+	}
+	stu *fast = head;
+	
+	int i = 0;
+	for (; i < k-1; i++)
+	{
+		if (fast->next == NULL)
+		{
+			//k is too big
+			return NULL;
+		}
+		fast = fast->next;
+	}
+	stu *slow = head;
+	stu *slowPre;
+
+	if (fast->next == NULL)
+	{
+		//remove head
+		stu *deleteOne = head;
+		head = head->next;
+		delete deleteOne;
+	}
+
+	while (fast->next != NULL)
+	{
+		slowPre = slow;
+		slow = slow->next;
+	}
+
+	//now slow is the one need to be removed, slowPre is the pre node of the slow
+	slowPre = slow->next;
+	delete slow;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 struct stu *DeleteKth2Tail(struct stu *head, int k)
 {
 	if (head == NULL || k <= 0)

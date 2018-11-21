@@ -1,9 +1,10 @@
 ﻿// Tree.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <vector>
 #include <iostream>
+#include <queue>
 using namespace std;
 struct TreeNode
 {
@@ -250,40 +251,43 @@ int FindLowestCommonAncestor(TreeNode *root, int value1, int value2) {
 #pragma endregion
 
 #pragma region rebuild tree based on preOrder array and inOrder array
-TreeNode * BuildTree(int preOrderArr[], int inOrderArr[], int length)
+TreeNode* BuildTreeBasedOnPreInArray(int pre[], int in[], int length)
 {
-	if (preOrderArr == NULL || inOrderArr == NULL || length <= 0)
+	if (pre == NULL || in == NULL || length <= 0)
 		return NULL;
-
-	int rootValue = preOrderArr[0];
-
+		
+	int rootValue = pre[0];
 	TreeNode *root = new TreeNode();
-	root->left = root->right = NULL;
 	root->value = rootValue;
+	root->left = root->right = NULL;
+
 	int i = 0;
-	for (; i < length; i++)
+	for (; i < length; ++i)
 	{
-		if (inOrderArr[i] == rootValue)
-		{
+		if (in[i] == rootValue)
 			break;
-		}
 	}
 
-	//check if valid 
 	if (i == length)
+	{
+		//no match
 		throw std::exception("invalid arr");
+	}
 
-	//now for inOrder arry, the [0,i-1] is the left tree
-	//[i+1, length-1] is the right tree
-	if(i>0)
-		root->left = BuildTree(preOrderArr + 1, inOrderArr, i);
-	if(length-i-1 > 0)
-		root->right = BuildTree(preOrderArr + i + 1, inOrderArr + i +1, length - i - 1);
-
+	if (i > 0) {
+		// It means we have left sub-tree
+		root->left = BuildTreeBasedOnPreInArray(pre + 1, in, i);
+	}
+	if (i < length - 1)
+	{
+		// It means we have right sub-tree
+		root->right = BuildTreeBasedOnPreInArray(pre + 1 + i, in + i + 1, length - 1 - i);
+	}
 	return root;
 }
 #pragma endregion
 
+#pragma region traverse Tree
 void display(TreeNode *root)
 {
 	if (root == NULL)
@@ -294,12 +298,43 @@ void display(TreeNode *root)
 	display(root->right);
 }
 
+void display_widthTraverse(TreeNode *root)
+{
+	if (root == NULL)
+	{
+		return;
+	}
+	std::queue<TreeNode*> que;
+	que.push(root);
+
+	while (!que.empty())
+	{
+		TreeNode *curNode = que.front();
+		cout << curNode->value << endl;
+		que.pop();
+
+		if(curNode->left != NULL)
+			que.push(curNode->left);
+		if(curNode->right != NULL)
+			que.push(curNode->right);
+	}
+
+}
+
+#pragma endregion
 int main()
 {
 	int pre[] = {1, 2, 4, 7, 3, 5, 6, 8};
 	int in[] = {4,7,2,1,5, 3, 8, 6};
-	TreeNode * root = BuildTree(pre, in, 8);
-	display(root);
+	try {
+		TreeNode * root = BuildTreeBasedOnPreInArray(pre, in, 8);
+		display(root);
+		display_widthTraverse(root);
+	}
+	catch (exception e)
+	{
+		printf("%s", e.what());
+	}
 
 	getchar();
     return 0;
