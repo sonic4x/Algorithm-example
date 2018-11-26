@@ -62,6 +62,34 @@ int Permute( char inString[], bool bRepeat)
 	free (used);
 	return 1;
 }
+
+/*use no other extra array*/
+void Dopermute_v2(char *pstr, char *pBegin)
+{
+	if (*pBegin == '\0')
+		printf("%s\n", pstr);
+
+	for (char *pCur = pBegin; *pCur != '\0'; pCur++)
+	{
+		char temp = *pBegin;
+		*pBegin = *pCur;
+		*pCur = temp;
+
+		Dopermute_v2(pstr, pBegin + 1);
+
+		temp = *pBegin;
+		*pBegin = *pCur;
+		*pCur = temp;
+
+	}
+}
+void Permute_v2(char* pstr)
+{
+	if (pstr == nullptr)
+		return;
+	Dopermute_v2(pstr, pstr);
+}
+
 #pragma endregion
 
 #pragma region combine
@@ -124,6 +152,7 @@ int main()
 	////////////////permute//////////////////
 	g_nTotalPermuteNum = 0;
 	char chStr[] = "abcd";
+	Permute_v2(chStr);
 	Permute(chStr, 0);	//permute
 	printf("the total permute num is:%d\n", g_nTotalPermuteNum);
 
