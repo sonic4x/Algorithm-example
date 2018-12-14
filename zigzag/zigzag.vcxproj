@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{6365F541-4A4A-4034-9086-95AF8BAE6490}</ProjectGuid>
+    <ProjectGuid>{4E6A4B14-1012-467E-85CE-21E047780607}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>array_string_serial</RootNamespace>
+    <RootNamespace>zigzag</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -146,7 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="array_string_serial.cpp" />
+    <ClCompile Include="zigzag.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
