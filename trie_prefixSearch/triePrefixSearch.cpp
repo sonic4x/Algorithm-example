@@ -109,7 +109,7 @@ public:
 		}
 	}
 
-	void printQueue(PossibleContainer qc)
+	void printQueue(const PossibleContainer &qc)
 	{
 		for (auto c : qc)
 		{
