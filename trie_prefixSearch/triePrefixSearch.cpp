@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include "multiplePattern_acAutomachine.h"
 using namespace std;
 
 typedef vector<char> PossibleContainer;
@@ -124,6 +125,7 @@ public:
 
 int main()
 {
+	//print all possible words in dictionary which start with the prefix.
 	char *dict[] = { "see", "so", "hello","her","hi" };
 	char s[] = "s";
 	TrieSearch ts;
@@ -135,5 +137,15 @@ int main()
 	string str = isFound ? "perfect match" : "unmatch";
 	cout << str << endl;
 
+
+	//multiple pattern match
+	char mainstr[] = "onedayisayhellotoher";
+	MultiPatternSearch mps;
+	for (int i = 0; i < 5; i++)
+	{
+		mps.insert(dict[i]);
+	}
+	mps.buildFailurePointer();
+	mps.match(mainstr);
 	getchar();
 }
