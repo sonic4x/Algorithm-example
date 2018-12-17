@@ -6,6 +6,7 @@
 
 #include <string>
 #include <queue>
+#include <string>
 using namespace std;
 class AcNode {
 public:
@@ -116,10 +117,19 @@ public:
 			if (p == nullptr) 
 				p = root; // start from root again if unmatched
 			AcNode *tmp = p;
-			while (tmp != root) { // 打印出可以匹配的模式串
+			while (tmp != root) { // print matched 
 				if (tmp->isEndingChar == true) {
 					int pos = i - tmp->length + 1;
 					printf("matched start index: %d, length: %d\n",pos, tmp->length);
+					
+					char *matchedOne = new char[tmp->length + 1];
+					strncpy_s(matchedOne, tmp->length+1, &text[pos], tmp->length); // The function include \0 at the end 
+					//matchedOne[tmp->length] = '\0'; // no need
+					printf("%s\n", matchedOne);
+					delete matchedOne;
+					matchedOne = nullptr;
+
+					// Don't break here, cause there maybe dictionary like: oi,i,im
 				}
 				tmp = tmp->fail;
 			}
