@@ -11,6 +11,8 @@ struct TreeNode
 	int value;
 	TreeNode *left;
 	TreeNode *right;
+
+	TreeNode() { left = right = nullptr; }
 };
 
 #pragma region 判断tree2是不是tree1的子节点
@@ -57,6 +59,29 @@ void MirrorRecursively(TreeNode *root)
 	MirrorRecursively(root->left);
 	MirrorRecursively(root->right);
 
+}
+
+void Mirror(TreeNode* root, TreeNode* root2)
+{
+	if (root == NULL || (root->left == NULL && root->right == NULL))
+		return;
+
+	if (root2 == nullptr)
+		return;
+
+	if (root->right) {
+		root2->left = new TreeNode();
+		root2->left->value = root->right->value;
+		Mirror(root->right, root2->left);
+	}
+		
+	if (root->left) {
+		root2->right = new TreeNode();
+		root2->right->value = root->left->value;
+		Mirror(root->left, root2->right);
+	}
+		
+	
 }
 #pragma endregion
 
@@ -290,10 +315,12 @@ TreeNode* BuildTreeBasedOnPreInArray(int pre[], int in[], int length)
 #pragma region traverse Tree
 void display(TreeNode *root)
 {
-	if (root == NULL)
+	if (root == NULL) {
 		return;
+	}
 
-	cout << (root->value) << endl;
+
+	printf("%d\t", root->value);
 	display(root->left);
 	display(root->right);
 }
@@ -310,7 +337,7 @@ void display_widthTraverse(TreeNode *root)
 	while (!que.empty())
 	{
 		TreeNode *curNode = que.front();
-		cout << curNode->value << endl;
+		printf("%d\t", curNode->value);
 		que.pop();
 
 		if(curNode->left != NULL)
@@ -318,7 +345,8 @@ void display_widthTraverse(TreeNode *root)
 		if(curNode->right != NULL)
 			que.push(curNode->right);
 	}
-
+	printf("\n");
+	return;
 }
 
 #pragma endregion
@@ -329,7 +357,18 @@ int main()
 	try {
 		TreeNode * root = BuildTreeBasedOnPreInArray(pre, in, 8);
 		display(root);
+		cout << endl;
 		display_widthTraverse(root);
+		MirrorRecursively(root);
+		display(root); //1 3 6 8 5 2 4 7
+		cout << endl;
+		TreeNode *root2 = new TreeNode();
+		root2->value = root->value;
+		root2->left = nullptr;
+		root2->right = nullptr;
+		Mirror(root, root2);
+		display_widthTraverse(root2);
+
 	}
 	catch (exception e)
 	{

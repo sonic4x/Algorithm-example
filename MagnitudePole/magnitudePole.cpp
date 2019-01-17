@@ -182,6 +182,9 @@ int FindMagnitudePole_v2(int a[], int n)
 			return i;
 		}
 	}
+
+	delete []maxNumberFromLeftStart2Cur;
+	delete []minNumberFromCur2RightEnd;
 	return -1;
 }
 int main()
@@ -202,6 +205,7 @@ int main()
 	start = std::chrono::high_resolution_clock::now();
 	pole = FindMagnitudePole_v2(a, 10);
 	finish = std::chrono::high_resolution_clock::now();
+	elapsed = finish - start;
 	cout << "Totle Time : " << elapsed.count() << "s" << endl;
 	printf("%d\n", pole);
 	getchar();
