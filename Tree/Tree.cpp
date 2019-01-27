@@ -6,14 +6,171 @@
 #include <iostream>
 #include <queue>
 using namespace std;
-struct TreeNode
+
+
+template<typename T>
+class Singleton
 {
+public:
+	static T& getInstance(int size = 8)
+	{
+		static T value(size);
+		return value;
+	}
+
+private:
+	Singleton();
+	~Singleton();
+};
+
+class TreeNode;
+TreeNode *freeNode;
+TreeNode *freeNode2;
+
+TreeNode * GetFreeBlock();
+void ReturnBlock(TreeNode* pTn);
+class TreeNode
+{
+public:
 	int value;
 	TreeNode *left;
 	TreeNode *right;
 
-	TreeNode() { left = right = nullptr; }
+	TreeNode(int data = 0) { 
+		value = data;  
+		left = right = root = nullptr; 
+		bDeleted = false;
+	}
+
+
+public:
+#pragma region BST insert
+	TreeNode *root;
+	bool bDeleted;
+	void BST_insert(int data) {
+		if (nullptr == root) {
+			//root = freeNode++;
+			root = GetFreeBlock();
+			root->value = data;
+			//root = new(freeNode2) TreeNode(data); //It will construct more than 1 obj.
+			//freeNode2 += sizeof(TreeNode);
+			
+			return;
+		}
+
+		TreeNode *p = root;
+		while (p != nullptr)
+		{
+			if (data > p->value) {
+				if (p->right == nullptr) {
+					// way1:
+					//p->right = new TreeNode(data);
+					// way2:
+					//p->right = freeNode++;
+					//p->right->value = data;
+					// way3: cannot do this!!!
+					/*p->right = new(freeNode2) TreeNode(data);
+					freeNode2 += sizeof(TreeNode);*/
+					// way4:
+					p->right = GetFreeBlock();
+					p->right->value = data;
+					return;
+				}
+				p = p->right;
+			}
+			else if(data < p->value){
+				if (p->left == nullptr) {
+					/*p->left = freeNode++;
+					p->left->value = data;*/
+					// way3:
+					/*p->left = new(freeNode2) TreeNode(data);
+					freeNode2 += sizeof(TreeNode);*/
+					p->left = GetFreeBlock();
+					p->left->value = data;
+					return;
+				}
+				p = p->left;
+			}
+			else {
+				p->bDeleted = false;
+				return;
+			}
+		}
+	}
+#pragma endregion 
+
+	void BST_Del(int data) {
+		TreeNode *p = root;
+		while (p != nullptr && p->value != data)
+		{
+			if (data > p->value) {
+				p = p->right;
+			}
+			else {
+				p = p->left;
+			}
+		}
+
+		if (p == nullptr) {
+			//not found
+			return;
+		}
+
+		p->bDeleted = true;
+		//ReturnBlock(p); 
+
+	}
 };
+
+class TreeNodeMemBlock
+{
+public:
+	bool _bUsed; // 4 bytes align pack 
+	TreeNode _tn;
+
+	TreeNodeMemBlock()
+	{
+		_bUsed = false;
+		//_tn = new TreeNode();
+	}
+};
+
+class MemBlockMgr
+{
+private:
+	TreeNodeMemBlock *_blocks;
+	int _size;
+public:
+	MemBlockMgr(int size) {
+		_blocks = new TreeNodeMemBlock[size];
+		_size = size;
+	}
+
+	TreeNode* GetFreeBlock() {
+		int idx = 0;
+		for (; idx < _size; idx++)
+		{
+			if (!_blocks[idx]._bUsed) {
+				_blocks[idx]._bUsed = true;
+				return &_blocks[idx]._tn;
+			}
+		}
+	}
+
+	void ReturnBlock(TreeNode* pTn) {
+		// note: cast to point size and then do - operation
+		TreeNodeMemBlock *blk = (TreeNodeMemBlock *)((unsigned int*)pTn - sizeof(bool));
+		blk->_bUsed = false;
+	}
+};
+
+TreeNode * GetFreeBlock() {
+	return Singleton<MemBlockMgr>::getInstance(8).GetFreeBlock();
+}
+
+void ReturnBlock(TreeNode* pTn) {
+	return Singleton<MemBlockMgr>::getInstance(8).ReturnBlock(pTn);
+}
 
 #pragma region 判断tree2是不是tree1的子节点
 bool DoesTree1HasTree2(TreeNode *root1, TreeNode *root2)
@@ -315,13 +472,13 @@ TreeNode* BuildTreeBasedOnPreInArray(int pre[], int in[], int length)
 #pragma region traverse Tree
 void display(TreeNode *root)
 {
-	if (root == NULL) {
+	if (root == nullptr) {
 		return;
 	}
 
-
-	printf("%d\t", root->value);
 	display(root->left);
+	if(root->bDeleted != true)
+		printf("%d\t", root->value);
 	display(root->right);
 }
 
@@ -352,6 +509,24 @@ void display_widthTraverse(TreeNode *root)
 #pragma endregion
 int main()
 {
+
+	freeNode = new TreeNode[10];
+	freeNode2 = (TreeNode*)malloc((sizeof(TreeNode)) * 10);
+	TreeNodeMemBlock *tnMemBlock = new TreeNodeMemBlock[10];
+	TreeNode tn;
+	tn.BST_insert(1);
+	tn.BST_insert(2);
+	tn.BST_insert(4);
+	tn.BST_insert(7);
+	tn.BST_insert(3);
+	tn.BST_insert(5);
+	tn.BST_insert(6);
+	tn.BST_insert(8);
+	display(tn.root);
+	tn.BST_Del(5);
+	display(tn.root);
+	tn.BST_insert(5);
+	display(tn.root);
 	int pre[] = {1, 2, 4, 7, 3, 5, 6, 8};
 	int in[] = {4,7,2,1,5, 3, 8, 6};
 	try {
