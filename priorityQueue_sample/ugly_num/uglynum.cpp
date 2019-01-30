@@ -9,6 +9,8 @@ Write a program to find and print the 1500'th ugly number.
 */
 #include <iostream> 
 #include <queue> 
+#include <functional>   // for std::greater
+
 using namespace std; 
 
 typedef pair<unsigned long, int> node_type; 
@@ -16,7 +18,7 @@ typedef pair<unsigned long, int> node_type;
 int main() 
 { 
 	unsigned long result[11]; 
-	priority_queue< node_type, vector<node_type>, greater<node_type> > Q;    //small top
+	priority_queue< node_type, vector<node_type>,std::greater<node_type> > Q;    //small top
 	Q.push( make_pair(1, 2) ); 
 	for (int i=0; i<1500; i++) 
 	{ 
