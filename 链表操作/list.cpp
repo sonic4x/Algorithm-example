@@ -256,6 +256,7 @@ stu *RmKth2Tail(stu *head, int k)
 	{
 		slowPre = slow;
 		slow = slow->next;
+		fast = fast->next;
 	}
 
 	//now slow is the one need to be removed, slowPre is the pre node of the slow
