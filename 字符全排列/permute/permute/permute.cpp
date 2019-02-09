@@ -71,6 +71,7 @@ void Dopermute_v2(char *pstr, char *pBegin)
 
 	for (char *pCur = pBegin; *pCur != '\0'; pCur++)
 	{
+
 		char temp = *pBegin;
 		*pBegin = *pCur;
 		*pCur = temp;
@@ -151,7 +152,7 @@ int main()
 {
 	////////////////permute//////////////////
 	g_nTotalPermuteNum = 0;
-	char chStr[] = "abcd";
+	char chStr[] = "abc";
 	Permute_v2(chStr);
 	Permute(chStr, 0);	//permute
 	printf("the total permute num is:%d\n", g_nTotalPermuteNum);

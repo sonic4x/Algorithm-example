@@ -2,7 +2,10 @@
 #include <assert.h>     
 #include <iostream>
 #include <string>
-
+#include <vector>
+#include <queue>
+#include <set>
+#include <functional>
 using namespace std;
 
 struct stu{
@@ -444,6 +447,29 @@ stu* FindFirstCommonNode(stu* head1, stu *head2)
 	return NULL;
 }
 #pragma endregion
+
+#pragma region 求链表的中间结点
+typedef stu Node;
+Node *GetMidNode(Node *head) {
+	if (head == nullptr)
+		return nullptr;
+
+	Node *slow = head;
+	Node *fast = head;
+
+	while (fast->next != nullptr && fast->next->next != nullptr)
+	{
+		fast = fast->next->next;
+		slow = slow->next;
+	}
+
+	return slow;	
+}
+
+#pragma endregion
+
+
+
 void display(struct stu *head)
 {
 	struct stu* p;

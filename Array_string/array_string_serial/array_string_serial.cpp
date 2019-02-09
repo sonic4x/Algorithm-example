@@ -94,6 +94,40 @@ int FindMaxLenWithNoRepeatedChar(char str[], int len)
 	return maxDiff + 1;
 }
 #pragma endregion
+
+#pragma region Merge 2 sorted arrays
+int * MergeArray(int a[], int n, int b[], int m)
+{
+	if (n <= 0 || m <= 0)
+		return nullptr;
+	if (a == nullptr)
+		return b;
+	if (b == nullptr)
+		return a;
+
+	int *newArray = new int[n + m];
+	int i = 0;
+	int j = 0;
+	int k = 0;
+	while (i < n && j < m) {
+		if (a[i] < b[j])
+			newArray[k++] = a[i++];
+		else
+			newArray[k++] = b[j++];
+	}
+
+	while (i < n) {
+		newArray[k++] = a[i++];
+	}
+
+	while (j < m) {
+		newArray[k++] = b[j++];
+	}
+
+	return newArray;
+}
+
+#pragma endregion
 int main()
 {
 	int strArr[3] = { 3,32,321 };
@@ -102,5 +136,14 @@ int main()
 	char *a = "abcdedfgfi";
 	int maxLenwithNoRepeat = FindMaxLenWithNoRepeatedChar(a, 10);
 	cout << maxLenwithNoRepeat << endl;
+
+	//Merge array
+	int a1[] = { 3,4,9,18,20 };
+	int a2[] = { 1,5,6,10,19,21,32 };
+	int *c = MergeArray(a1, 5, a2, 7);
+	for (int idx = 0; idx < 12; idx++)
+	{
+		cout << c[idx] << "\t";
+	}
 	getchar();
 }
