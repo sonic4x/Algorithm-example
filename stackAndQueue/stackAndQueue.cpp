@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <stack>
+#include "validParentheses.h"
 using namespace std;
 
 #pragma region use 2 stacks to implement queue
@@ -54,6 +55,9 @@ private:
 #pragma endregion
 int main()
 {
+	ValidParenthesesSolution vps;
+	string s("{}");
+	vps.isValid(s);
 	MyQueue mq;
 	mq.Mypush(1);
 	mq.Mypush(2);
