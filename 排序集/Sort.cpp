@@ -978,6 +978,14 @@ void  findMaxK(Node *head)
 #pragma region output k most smallest numbers
 /* way1 take advantage of partition*/
 /* way2*/
+/*note functor for multiset should be a const 
+struct compare
+{
+	bool operator()(const ListNode* lhs, const ListNode* rhs) const{
+		return lhs->val < rhs->val;
+	}
+};
+*/
 typedef multiset<int, greater<int>>						intSet;   //descend order
 typedef multiset<int, greater<int>>::iterator	intSetIter;
 void GetLeastNumbers(vector<int> &numbers, intSet& leastNumbers, int k) {
