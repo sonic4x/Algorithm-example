@@ -1,4 +1,6 @@
 #include <iostream>
+#include <map>
+#include <vector>
 using namespace std;
 
 /*
@@ -50,6 +52,15 @@ int Bs(int *a, int n, int x) {
 
 int main()
 {
+	vector<int> vi = { 1,2,3 };
+	map<int, vector<int>> mm;
+	mm.insert(make_pair(1, vi));
+
+	if (mm.end() != mm.find(1)) {
+		auto &v = mm[1];
+		v.push_back(4);
+	}
+
 	int a[] = { 1,3,5,8,12,18,22,26 };
 	int len = sizeof(a) / sizeof(a[0]); //8
 	
