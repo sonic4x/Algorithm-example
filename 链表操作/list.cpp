@@ -206,6 +206,17 @@ struct stu* InvertList(stu *head)
 	return pre;
 }
 
+
+struct stu* InvertList_recursive(stu *head) {
+	if (head == nullptr || head->next == nullptr) 
+		return head;
+
+	stu *newHead = InvertList_recursive(head->next);
+	head->next->next = head;
+	head->next = nullptr;
+
+	return newHead;
+}
 /*---------------------------
 单链表连接
 ----------------------------*/
@@ -504,9 +515,9 @@ int main()
 	display(newHead);
 	display(s);
 	//反转
-	newHead = InvertList(newHead);
+	newHead = InvertList_recursive(newHead);
 	display(newHead);
-	newHead = InvertList(newHead);
+	newHead = InvertList_recursive(newHead);
 	display(newHead);
 
 	//链表比较

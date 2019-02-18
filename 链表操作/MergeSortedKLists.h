@@ -137,7 +137,9 @@ public:
 	ListNode* mergeKLists(vector<ListNode*>& lists) {
 		if (lists.empty()) 
 			return NULL;
-		for (int n = lists.size(); n > 1; n = (n + 1) / 2) {
+
+		int n = lists.size();
+		for (; n > 1; n = (n + 1) / 2) {
 			for (int i = 0, j = n - 1; i < j; ++i, --j) {
 				lists[i] = mergeTwoLists(lists[i], lists[j]);
 			}

@@ -102,6 +102,7 @@ class Solution3 {
 
 public:
 	vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+		
 		vector<int> result;
 		if (k == 0 || k == 1) 
 			return result;
@@ -110,7 +111,7 @@ public:
 		for (int i = 0; i < n; i++) {
 			while (!dq.empty() && dq.front() <= i - k)
 				dq.pop_front();
-			while (!dq.empty() && nums[dq.back()] <= nums[i])
+			while (!dq.empty() && nums[dq.back()] <= nums[i])  //note here is <=, not <
 				dq.pop_back();
 			dq.push_back(i);
 			if (i >= k - 1)

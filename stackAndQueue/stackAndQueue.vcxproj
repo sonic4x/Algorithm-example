@@ -149,6 +149,8 @@
     <ClCompile Include="stackAndQueue.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EvaluateReversePolishNotation.h" />
+    <ClInclude Include="LongestValidParenthese.h" />
     <ClInclude Include="MaxSlideWindow.h" />
     <ClInclude Include="validParentheses.h" />
   </ItemGroup>

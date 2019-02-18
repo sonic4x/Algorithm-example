@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stack>
 #include "validParentheses.h"
+#include "EvaluateReversePolishNotation.h"
 using namespace std;
 
 #pragma region use 2 stacks to implement queue
@@ -55,6 +56,10 @@ private:
 #pragma endregion
 int main()
 {
+	Sln_EvaluateReversePolishNotation erpn;
+	vector<string> rpn = { "10","6","9","3","+","-11","*","/","*","17","+","5","+" };
+	erpn.evalRPN(rpn);
+
 	ValidParenthesesSolution vps;
 	string s("{}");
 	vps.isValid(s);
